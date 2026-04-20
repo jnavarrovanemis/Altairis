@@ -60,11 +60,6 @@ export default async function TiposHabitacionPage({ searchParams }: PageProps) {
           totalRegistros={response.totalRegistros}
         />
       </div>
-      
-      {/* Indicador de carga sutil para navegación entre páginas */}
-      <div className="text-[10px] text-slate-400 font-mono uppercase tracking-widest text-center mt-4">
-        Powered by Jose Navarro
-      </div>
     </div>
   );
 }
