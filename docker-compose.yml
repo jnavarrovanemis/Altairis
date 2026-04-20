@@ -1,0 +1,46 @@
+name: viajes-altairis
+
+services:
+  # 1. SERVICIO DE BASE DE DATOS (SQL Server)
+  db:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: altairis_db
+    environment:
+      - ACCEPT_EULA=Y
+      - MSSQL_SA_PASSWORD=ViajesAltairis2026!
+    ports:
+      - "1433:1433"
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'ViajesAltairis2026!' -Q 'SELECT 1' -No -C"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 30s
+
+  # 2. SERVICIO BACKEND (.NET API)
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: altairis_api
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      - ConnectionStrings__DefaultConnection=Server=db;Database=AltairisDBV1;User Id=sa;Password=ViajesAltairis2026!;TrustServerCertificate=True;
+    ports:
+      - "5000:8080"
+
+  # 3. SERVICIO FRONTEND (Next.js)
+  web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: altairis_web
+    depends_on:
+      - api
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:5000/api
+      - API_URL_INTERNAL=http://api:8080/api
+    ports:
+      - "3000:3000"

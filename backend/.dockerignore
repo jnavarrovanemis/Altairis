@@ -1,0 +1,21 @@
+# Directorios de compilación local (Windows)
+bin/
+obj/
+out/
+publish/
+
+# Archivos de configuración de IDEs
+.vs/
+.vscode/
+*.user
+*.userosscache
+*.sln.doccache
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose*
+
+# Archivos temporales y logs
+*.log
+.DS_Store

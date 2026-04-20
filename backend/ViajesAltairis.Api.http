@@ -1,0 +1,6 @@
+@ViajesAltairis.Api_HostAddress = http://localhost:5291
+
+GET {{ViajesAltairis.Api_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
